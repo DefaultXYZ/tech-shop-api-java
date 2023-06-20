@@ -1,0 +1,10 @@
+api:
+  properties:
+    users:
+      - username: "test"
+        password: "pass"
+        roles:
+          - "USER"
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_tech_shop_test

@@ -1,0 +1,27 @@
+api:
+  properties:
+    users:
+      - username: "api-user"
+        password: "YXBpLXVzZXItdGVzdC1wYXNz"
+        roles:
+          - "USER"
+spring:
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    defer-datasource-initialization: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_tech_shop
+    username: postgres
+    password: pass
+    driver-class-name: org.postgresql.Driver
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
