@@ -1,0 +1,7 @@
+api:
+  properties:
+    users:
+      - username: "test"
+        password: "pass"
+        roles:
+          - "ADMIN"

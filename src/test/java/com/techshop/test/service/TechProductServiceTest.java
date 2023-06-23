@@ -8,12 +8,12 @@ import com.techshop.repository.TypeRepository;
 import com.techshop.service.TechProductService;
 import com.techshop.test.annotation.ServiceTest;
 import com.techshop.test.mocks.MockData;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import static org.mockito.ArgumentMatchers.eq;
+import java.util.Optional;
+
 import static org.mockito.Mockito.*;
 
 @ServiceTest
@@ -23,27 +23,31 @@ public class TechProductServiceTest {
     private TechProductService service;
 
     @Mock
-    private TechProductRepository repository;
+    private TechProductRepository productRepository;
 
     @Mock
     private TypeRepository typeRepository;
 
     @Test
     void shouldSaveProduct_whenCreateNew() {
-        CreateTechProduct given = MockData.createTechProduct();
-        Type type = new Type();
-        type.setId(MockData.Type.ID);
-        TechProduct expected = new TechProduct();
-        expected.setName(MockData.TechProduct.NAME);
-        expected.setDescription(MockData.TechProduct.DESCRIPTION);
-        expected.setCost(MockData.TechProduct.COST);
-        expected.setType(type);
-        when(typeRepository.getReferenceById(eq(MockData.Type.ID))).thenReturn(type);
-        when(repository.saveAndFlush(any())).thenReturn(expected);
+        Type type = mock();
+        CreateTechProduct given = new CreateTechProduct("Name", MockData.TYPE_ID_11, "Desc", 1.1);
+        when(typeRepository.getReferenceById(eq(MockData.TYPE_ID_11))).thenReturn(type);
 
-        TechProduct actual = service.createNew(given);
+        service.createNew(given);
 
-        verify(repository).saveAndFlush(eq(expected));
-        Assertions.assertEquals(expected, actual);
+        TechProduct expected = TechProduct.builder().name("Name").description("Desc").cost(1.1).type(type).build();
+        verify(productRepository, times(1)).saveAndFlush(eq(expected));
+        verifyNoMoreInteractions(productRepository);
+    }
+
+    @Test
+    void shouldGetProduct_whenFindById() {
+        when(productRepository.findById(eq(MockData.PRODUCT_ID_51))).thenReturn(Optional.of(mock()));
+
+        service.getProductById(MockData.PRODUCT_ID_51);
+
+        verify(productRepository, times(1)).findById(MockData.PRODUCT_ID_51);
+        verifyNoMoreInteractions(productRepository);
     }
 }

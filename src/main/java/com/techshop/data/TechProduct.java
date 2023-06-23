@@ -1,15 +1,16 @@
 package com.techshop.data;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "tech_product")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class TechProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,6 @@ public class TechProduct {
     @JoinColumn(name = "type_id", referencedColumnName = "id")
     private Type type;
 
-    @Lob
     @Column(nullable = false)
     private String description;
 
